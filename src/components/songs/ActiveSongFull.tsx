@@ -13,6 +13,7 @@ import {CONTAINER_PADDING} from '../../constants';
 import Gap from '../Gap';
 import SongBar from './SongBar';
 import {ISong} from '../../types';
+import PlayPauseBtn from './PlayPauseBtn';
 
 const maxWidth = Dimensions.get('screen').width;
 const imgSize = maxWidth * 0.8;
@@ -30,8 +31,7 @@ const ActiveSongFull: FC<IProps> = ({
   nextSong,
   prevSong,
 }) => {
-  const {activeSong, isPlaying, setIsPlaying, setActiveSong, closeMusic} =
-    useMusicStore();
+  const {activeSong, setActiveSong, closeMusic} = useMusicStore();
 
   const onPressPrevSong = () => {
     if (playTime > (activeSong?.duration ?? 0) * 0.05) {
@@ -68,11 +68,7 @@ const ActiveSongFull: FC<IProps> = ({
         <TouchableOpacity style={styles.activeButton} onPress={onPressPrevSong}>
           <Text style={styles.activeButtonText}>{'<<'}</Text>
         </TouchableOpacity>
-        <TouchableOpacity
-          style={styles.activeButton}
-          onPress={() => setIsPlaying()}>
-          <Text style={styles.activeButtonText}>{isPlaying ? '||' : '|>'}</Text>
-        </TouchableOpacity>
+        <PlayPauseBtn />
         <TouchableOpacity style={styles.activeButton} onPress={onPressNextSong}>
           <Text style={styles.activeButtonText}>{'>>'}</Text>
         </TouchableOpacity>
