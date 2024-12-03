@@ -7,8 +7,8 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import {ISong, TPositions} from '../types';
-import {HEADER_HEIGHT, SONG_HEIGHT} from '../constants';
+import {ISong, TPositions} from '../../types';
+import {HEADER_HEIGHT, SONG_HEIGHT} from '../../constants';
 import Animated, {
   SharedValue,
   useAnimatedStyle,
@@ -17,7 +17,7 @@ import Animated, {
   withTiming,
 } from 'react-native-reanimated';
 import {Gesture, GestureDetector} from 'react-native-gesture-handler';
-import {useMusicStore} from '../store';
+import {useMusicStore} from '../../store';
 
 interface IProps {
   song: ISong;

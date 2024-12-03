@@ -1,4 +1,4 @@
-import React, {FC, memo, useMemo} from 'react';
+import React, {FC, memo} from 'react';
 import {StyleSheet, Text, View} from 'react-native';
 
 import Animated, {
@@ -7,7 +7,7 @@ import Animated, {
 } from 'react-native-reanimated';
 
 import {ISong, TPositions} from '../types';
-import Song from './Song';
+import {Song} from './songs';
 import {HEADER_HEIGHT, SONG_HEIGHT} from '../constants';
 import {useMusicStore} from '../store';
 

@@ -3,8 +3,12 @@ import {ISong} from '../types';
 
 interface IMusicStore {
   songs: ISong[];
+  isPlaying: boolean;
   activeSong: ISong | null;
+  setIsPlaying(v?: boolean): void;
   setActiveSong(song: ISong | null): void;
+  playMusic(): void;
+  closeMusic(): void;
   setSongs(songs: ISong[]): void;
 }
 
@@ -102,11 +106,15 @@ export const useMusicStore = create<IMusicStore>(use => ({
       preview_url: 'https://sefon.pro/img/artist_photos/miyagi.jpg',
     },
   ],
-  setSongs: songs => use({songs}),
+  isPlaying: false,
   activeSong: null,
+  setSongs: songs => use({songs}),
+  setIsPlaying: v => use(s => ({...s, isPlaying: v ?? !s.isPlaying})),
   setActiveSong: activeSong =>
     use(s => ({
       ...s,
       activeSong: activeSong ? {...s, ...activeSong} : activeSong,
     })),
+  playMusic: () => use(s => ({...s, activeSong: s.songs[0], isPlaying: true})),
+  closeMusic: () => use(s => ({...s, activeSong: null, isPlaying: false})),
 }));

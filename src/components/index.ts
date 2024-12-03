@@ -1,4 +1,6 @@
-import ActiveSong from './ActiveSong';
+export * from './songs';
+import Gap from './Gap';
+import Layout from './Layout';
 import Player from './Player';
 
-export {Player, ActiveSong};
+export {Player, Gap, Layout};
