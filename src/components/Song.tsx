@@ -1,5 +1,12 @@
 import React, {FC, memo, useState} from 'react';
-import {Dimensions, StyleSheet, Text} from 'react-native';
+import {
+  Dimensions,
+  Image,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import {ISong, TPositions} from '../types';
 import {HEADER_HEIGHT, SONG_HEIGHT} from '../constants';
 import Animated, {
@@ -10,6 +17,7 @@ import Animated, {
   withTiming,
 } from 'react-native-reanimated';
 import {Gesture, GestureDetector} from 'react-native-gesture-handler';
+import {useMusicStore} from '../store';
 
 interface IProps {
   song: ISong;
@@ -46,6 +54,8 @@ const changePositions = (positions: TPositions, from: number, to: number) => {
 
 const Song: FC<IProps> = ({song, positions, songsCount, scrollY}) => {
   const [isMoving, setIsMoving] = useState<boolean>(false);
+
+  const {setActiveSong} = useMusicStore();
 
   const top = useSharedValue(positions.get()[song.id] * SONG_HEIGHT);
 
@@ -86,25 +96,67 @@ const Song: FC<IProps> = ({song, positions, songsCount, scrollY}) => {
     .runOnJS(true);
 
   return (
-    <Animated.View style={[styles.song, animatedStyles]}>
-      <GestureDetector gesture={pan}>
-        <Animated.View>
+    <Animated.View style={[styles.song, styles.flex, animatedStyles]}>
+      <TouchableOpacity
+        onPress={() => {
+          setActiveSong(null);
+          setActiveSong(song);
+        }}
+        style={styles.flex}>
+        <View>
+          {song.preview_url.length > 0 ? (
+            <Image
+              source={{
+                uri: song.preview_url,
+                height: SONG_HEIGHT / 2,
+                width: SONG_HEIGHT / 2,
+              }}
+            />
+          ) : (
+            <View style={styles.box} />
+          )}
+        </View>
+        <View>
           <Text style={styles.name}>{song.name}</Text>
-          <Text style={styles.description}>{song.id}</Text>
-        </Animated.View>
+          <Text style={styles.description}>{song.description}</Text>
+        </View>
+      </TouchableOpacity>
+      <GestureDetector gesture={pan}>
+        <View>
+          <View style={styles.songDragElement} />
+          <View style={styles.divider} />
+          <View style={styles.songDragElement} />
+          <View style={styles.divider} />
+          <View style={styles.songDragElement} />
+        </View>
       </GestureDetector>
     </Animated.View>
   );
 };
 
 const styles = StyleSheet.create({
+  flex: {
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    gap: 12,
+  },
   song: {
     height: SONG_HEIGHT,
-    width: width * 0.8,
+    width: width * 0.99,
     position: 'absolute',
     left: 0,
     padding: 12,
     backgroundColor: '#fff',
+  },
+  songDragElement: {
+    width: 20,
+    height: 2,
+    backgroundColor: '#444',
+  },
+  divider: {
+    height: 5,
   },
   name: {
     fontSize: 22,
@@ -112,6 +164,11 @@ const styles = StyleSheet.create({
   description: {
     fontSize: 16,
     color: 'grey',
+  },
+  box: {
+    width: SONG_HEIGHT / 2,
+    height: SONG_HEIGHT / 2,
+    backgroundColor: 'grey',
   },
 });
 

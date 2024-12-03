@@ -1,3 +1,4 @@
+import ActiveSong from './ActiveSong';
 import Player from './Player';
 
-export {Player};
+export {Player, ActiveSong};

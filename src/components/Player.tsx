@@ -1,4 +1,4 @@
-import React, {FC, memo} from 'react';
+import React, {FC, memo, useMemo} from 'react';
 import {StyleSheet, Text, View} from 'react-native';
 
 import Animated, {
@@ -31,6 +31,14 @@ const Player: FC = () => {
   });
 
   const positions = useSharedValue(getPositions(songs));
+
+  // const sortedSongs = useMemo(
+  //   () =>
+  //     songs.sort(
+  //       (prev, cur) => positions.value[prev.id] - positions.value[cur.id],
+  //     ),
+  //   [songs, positions],
+  // );
 
   return (
     <>
