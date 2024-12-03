@@ -82,7 +82,7 @@ const ActiveSong: FC = () => {
   return (
     <BottomSheet
       index={-1}
-      snapPoints={['20%', '90%']}
+      snapPoints={['20%', '100%']}
       enableDynamicSizing
       enablePanDownToClose
       onAnimate={(_, to) => setBottomSheetInx(to)}
@@ -97,8 +97,9 @@ const ActiveSong: FC = () => {
             playTime={playTime}
           />
         )}
-        {bottomSheetInx === 1 ||
-          (bottomSheetInx === 0 && <ActiveSongShort playTime={playTime} />)}
+        {(bottomSheetInx === 1 || bottomSheetInx === 0) && (
+          <ActiveSongShort playTime={playTime} />
+        )}
       </BottomSheetView>
     </BottomSheet>
   );

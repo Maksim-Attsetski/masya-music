@@ -1,22 +1,13 @@
-import React, {FC, memo} from 'react';
+import React, {FC, memo, useCallback} from 'react';
 import {useMusicStore} from '../../store';
-import {
-  Dimensions,
-  Image,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-} from 'react-native';
+import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 
 import {CONTAINER_PADDING} from '../../constants';
 import Gap from '../Gap';
 import SongBar from './SongBar';
 import {ISong} from '../../types';
 import PlayPauseBtn from './PlayPauseBtn';
-
-const maxWidth = Dimensions.get('screen').width;
-const imgSize = maxWidth * 0.8;
+import ScrollablePreviewList from './ScrollablePreviewList';
 
 interface IProps {
   playTime: number;
@@ -33,28 +24,35 @@ const ActiveSongFull: FC<IProps> = ({
 }) => {
   const {activeSong, setActiveSong, closeMusic} = useMusicStore();
 
-  const onPressPrevSong = () => {
-    if (playTime > (activeSong?.duration ?? 0) * 0.05) {
-      setPlayTime(0);
-      return;
-    }
-    if (prevSong) {
-      setActiveSong(prevSong);
-    } else {
-      closeMusic();
-    }
-  };
+  const onPressPrevSong = useCallback(
+    (withoutPlayTime: boolean = false) => {
+      if (playTime > (activeSong?.duration ?? 0) * 0.05 && !withoutPlayTime) {
+        setPlayTime(0);
+        return;
+      }
+      if (prevSong) {
+        setActiveSong(prevSong);
+      } else {
+        closeMusic();
+      }
+    },
+    [
+      activeSong?.duration,
+      closeMusic,
+      playTime,
+      prevSong,
+      setActiveSong,
+      setPlayTime,
+    ],
+  );
 
-  const onPressNextSong = () => {
+  const onPressNextSong = useCallback(() => {
     setActiveSong(nextSong);
-  };
+  }, [nextSong, setActiveSong]);
 
   return (
-    <View style={styles.song}>
-      <Image
-        source={{uri: activeSong?.preview_url, height: imgSize, width: imgSize}}
-        style={styles.songPreview}
-      />
+    <View style={styles.song} key={activeSong?.id}>
+      <ScrollablePreviewList key={'songs-scrollable-list'} />
       <Gap />
       <View>
         <Text style={styles.name}>{activeSong?.name}</Text>
@@ -65,7 +63,9 @@ const ActiveSongFull: FC<IProps> = ({
 
       <Gap y={20} />
       <View style={[styles.flex, styles.evenly]}>
-        <TouchableOpacity style={styles.activeButton} onPress={onPressPrevSong}>
+        <TouchableOpacity
+          style={styles.activeButton}
+          onPress={() => onPressPrevSong()}>
           <Text style={styles.activeButtonText}>{'<<'}</Text>
         </TouchableOpacity>
         <PlayPauseBtn />
