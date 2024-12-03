@@ -1,3 +1,5 @@
 import Home from './Home';
+import Profile from './Profile';
+import SongOrder from './SongOrder';
 
-export {Home};
+export {Profile, Home, SongOrder};

@@ -8,6 +8,7 @@ import SongBar from './SongBar';
 import {ISong} from '../../types';
 import PlayPauseBtn from './PlayPauseBtn';
 import ScrollablePreviewList from './ScrollablePreviewList';
+import {useNavigation} from '@react-navigation/native';
 
 interface IProps {
   playTime: number;
@@ -23,6 +24,8 @@ const ActiveSongFull: FC<IProps> = ({
   prevSong,
 }) => {
   const {activeSong, setActiveSong, closeMusic} = useMusicStore();
+
+  const navigation = useNavigation();
 
   const onPressPrevSong = useCallback(
     (withoutPlayTime: boolean = false) => {
@@ -50,6 +53,10 @@ const ActiveSongFull: FC<IProps> = ({
     setActiveSong(nextSong);
   }, [nextSong, setActiveSong]);
 
+  const onPressGoToSongOrder = () => {
+    navigation.navigate('SongOrder');
+  };
+
   return (
     <View style={styles.song} key={activeSong?.id}>
       <ScrollablePreviewList key={'songs-scrollable-list'} />
@@ -73,6 +80,11 @@ const ActiveSongFull: FC<IProps> = ({
           <Text style={styles.activeButtonText}>{'>>'}</Text>
         </TouchableOpacity>
       </View>
+      <TouchableOpacity
+        onPress={onPressGoToSongOrder}
+        style={styles.activeButton}>
+        <Text style={styles.activeButtonText}>ℹ️</Text>
+      </TouchableOpacity>
     </View>
   );
 };

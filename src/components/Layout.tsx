@@ -2,8 +2,13 @@ import React, {FC, memo, PropsWithChildren} from 'react';
 import {StyleSheet} from 'react-native';
 import {SafeAreaProvider, SafeAreaView} from 'react-native-safe-area-context';
 import {CONTAINER_PADDING} from '../constants';
+import {ActiveSong} from './songs';
 
-const Layout: FC<PropsWithChildren> = ({children}) => {
+interface IProps extends PropsWithChildren {
+  withActiveSong?: boolean;
+}
+
+const Layout: FC<IProps> = ({children, withActiveSong = true}) => {
   return (
     <SafeAreaProvider>
       <SafeAreaView
@@ -12,6 +17,7 @@ const Layout: FC<PropsWithChildren> = ({children}) => {
           {paddingHorizontal: CONTAINER_PADDING},
         ]}>
         {children}
+        {withActiveSong && <ActiveSong />}
       </SafeAreaView>
     </SafeAreaProvider>
   );

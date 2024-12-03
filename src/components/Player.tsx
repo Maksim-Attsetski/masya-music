@@ -59,7 +59,6 @@ const Player: FC = () => {
           <Song
             key={item.id}
             scrollY={scrollY}
-            songsCount={songs.length}
             positions={positions}
             song={item}
           />

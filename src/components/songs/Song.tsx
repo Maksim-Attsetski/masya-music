@@ -23,10 +23,11 @@ interface IProps {
   song: ISong;
   positions: SharedValue<TPositions>;
   scrollY: SharedValue<number>;
-  songsCount: number;
 }
 
 const {width} = Dimensions.get('screen');
+
+type TSongWithPos = ISong & {pos: number};
 
 function clamp(val: number, min: number, max: number) {
   'worklet';
@@ -35,7 +36,6 @@ function clamp(val: number, min: number, max: number) {
 
 const changePositions = (positions: TPositions, from: number, to: number) => {
   'worlet';
-  console.log('newPositions in func', from, to);
   const newPositions = {...positions};
   for (const key in newPositions) {
     if (Object.prototype.hasOwnProperty.call(newPositions, key)) {
@@ -52,10 +52,30 @@ const changePositions = (positions: TPositions, from: number, to: number) => {
   return newPositions;
 };
 
-const Song: FC<IProps> = ({song, positions, songsCount, scrollY}) => {
+const fromObjToList = (
+  positions: TPositions,
+  songs: ISong[],
+): TSongWithPos[] => {
+  const songsAsObj: {[key: string]: ISong} = {};
+  const result: TSongWithPos[] = [];
+
+  songs.forEach(song => {
+    songsAsObj[song.id] = song;
+  });
+
+  for (const key in positions) {
+    if (Object.prototype.hasOwnProperty.call(songsAsObj, key)) {
+      result.push({...songsAsObj[key], pos: positions[key]});
+    }
+  }
+
+  return result.sort((a, b) => a.pos - b.pos);
+};
+
+const Song: FC<IProps> = ({song, positions, scrollY}) => {
   const [isMoving, setIsMoving] = useState<boolean>(false);
 
-  const {setActiveSong} = useMusicStore();
+  const {setActiveSong, activeSong, songs, setSongs} = useMusicStore();
 
   const top = useSharedValue(positions.get()[song.id] * SONG_HEIGHT);
 
@@ -78,7 +98,7 @@ const Song: FC<IProps> = ({song, positions, songsCount, scrollY}) => {
       const newPosition = clamp(
         Math.floor(newTop / SONG_HEIGHT),
         0,
-        songsCount - 1,
+        songs.length - 1,
       );
 
       if (newPosition !== positions.get()[song.id]) {
@@ -91,12 +111,20 @@ const Song: FC<IProps> = ({song, positions, songsCount, scrollY}) => {
       }
     })
     .onEnd(() => {
+      setSongs(fromObjToList(positions.get(), songs)); // change song order
+
       setIsMoving(false);
     })
     .runOnJS(true);
 
   return (
-    <Animated.View style={[styles.song, styles.flex, animatedStyles]}>
+    <Animated.View
+      style={[
+        styles.song,
+        activeSong?.id === song.id && styles.activeSong,
+        styles.flex,
+        animatedStyles,
+      ]}>
       <TouchableOpacity
         onPress={() => {
           setActiveSong(null);
@@ -149,6 +177,9 @@ const styles = StyleSheet.create({
     left: 0,
     padding: 12,
     backgroundColor: '#fff',
+  },
+  activeSong: {
+    backgroundColor: '#eee',
   },
   songDragElement: {
     width: 20,
