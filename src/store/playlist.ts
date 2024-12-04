@@ -14,6 +14,7 @@ export const usePlaylistStore = create<IStore>(use => ({
     {
       id: 'favorite',
       name: 'Любимые',
+      preview_url: 'https://sefon.pro/img/artist_photos/miyagi.jpg',
       tracks: [],
       author_id: {
         id: 'test',

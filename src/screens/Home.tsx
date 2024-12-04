@@ -2,7 +2,7 @@ import React, {FC, memo} from 'react';
 import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import {useMusicStore} from '../store';
 import Layout from '../components/Layout';
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 
 const Home: FC = () => {
   const {isPlaying, activeSong, playMusic, setIsPlaying} = useMusicStore();
@@ -22,10 +22,10 @@ const Home: FC = () => {
   return (
     <Layout>
       <View style={styles.container}>
-        <TouchableOpacity onPress={onPressMyVibe}>
-          <MaterialCommunityIcons
-            name="folder-heart-outline"
-            size={24}
+        <TouchableOpacity style={styles.myVibe} onPress={onPressMyVibe}>
+          <FontAwesome5
+            name={isPlaying ? 'pause' : 'play'}
+            size={32}
             color="black"
           />
           <Text style={styles.myVibeText}>Мой вайб</Text>
@@ -40,6 +40,11 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  myVibe: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 12,
   },
   myVibeText: {
     fontWeight: 700,
