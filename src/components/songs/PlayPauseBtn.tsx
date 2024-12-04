@@ -1,39 +1,51 @@
 import React, {FC, memo} from 'react';
 import {
   StyleSheet,
-  Text,
   TouchableOpacity,
   TouchableOpacityProps,
 } from 'react-native';
+import FontAwesome5Icon from 'react-native-vector-icons/FontAwesome5';
 
 import {useMusicStore} from '../../store';
 
-const PlayPauseBtn: FC<TouchableOpacityProps> = props => {
+type TBtnSize = 'medium' | 'small';
+
+interface IProps extends TouchableOpacityProps {
+  size?: TBtnSize;
+}
+
+const PlayPauseBtn: FC<IProps> = props => {
   const {setIsPlaying, isPlaying} = useMusicStore();
+
+  const styles = getStyles(props.size);
 
   return (
     <TouchableOpacity
       {...props}
       style={[styles.activeButton, props.style]}
       onPress={() => setIsPlaying()}>
-      <Text style={styles.activeButtonText}>{isPlaying ? '||' : '|>'}</Text>
+      <FontAwesome5Icon
+        name={isPlaying ? 'pause' : 'play'}
+        size={20}
+        style={styles.activeButtonText}
+        color="black"
+      />
     </TouchableOpacity>
   );
 };
 
-const styles = StyleSheet.create({
-  activeButton: {
-    backgroundColor: '#eee',
-    width: 50,
-    height: 50,
-    justifyContent: 'center',
-    borderRadius: 50,
-  },
-  activeButtonText: {
-    textAlign: 'center',
-    fontSize: 18,
-    fontWeight: 900,
-  },
-});
+const getStyles = (size: TBtnSize = 'medium') =>
+  StyleSheet.create({
+    activeButton: {
+      backgroundColor: size === 'medium' ? '#eee' : 'transparent',
+      width: 50,
+      height: 50,
+      justifyContent: 'center',
+      borderRadius: 50,
+    },
+    activeButtonText: {
+      textAlign: 'center',
+    },
+  });
 
 export default memo(PlayPauseBtn);

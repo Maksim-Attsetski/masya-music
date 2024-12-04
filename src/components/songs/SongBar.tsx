@@ -83,7 +83,6 @@ const styles = StyleSheet.create({
     position: 'absolute',
     height: 2,
     backgroundColor: 'red',
-    zIndex: 5,
   },
 });
 

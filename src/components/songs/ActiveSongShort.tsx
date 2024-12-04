@@ -1,16 +1,11 @@
 import React, {FC, memo} from 'react';
-import {useMusicStore} from '../../store';
-import {
-  Dimensions,
-  Image,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-} from 'react-native';
+import {Dimensions, StyleSheet, View} from 'react-native';
 
+import {useMusicStore} from '../../store';
 import {CONTAINER_PADDING, SONG_HEIGHT} from '../../constants';
 import SongBar from './SongBar';
+import SmallSong from './SmallSong';
+import PlayPauseBtn from './PlayPauseBtn';
 
 const maxWidth = Dimensions.get('screen').width;
 
@@ -19,35 +14,13 @@ interface IProps {
 }
 
 const ActiveSongShort: FC<IProps> = ({playTime}) => {
-  const {activeSong, isPlaying, setIsPlaying} = useMusicStore();
+  const {activeSong} = useMusicStore();
 
   return (
     <View style={styles.song}>
       <View style={[styles.flex, styles.timer]}>
-        <View style={styles.flex}>
-          <View>
-            {(activeSong?.preview_url.length ?? 0) > 0 ? (
-              <Image
-                source={{
-                  uri: activeSong?.preview_url,
-                  height: SONG_HEIGHT / 2,
-                  width: SONG_HEIGHT / 2,
-                }}
-              />
-            ) : (
-              <View style={styles.box} />
-            )}
-          </View>
-          <View>
-            <Text style={styles.name}>{activeSong?.name}</Text>
-            <Text style={styles.description}>{activeSong?.description}</Text>
-          </View>
-        </View>
-        <TouchableOpacity
-          style={styles.activeButton}
-          onPress={() => setIsPlaying()}>
-          <Text style={styles.activeButtonText}>{isPlaying ? '||' : '|>'}</Text>
-        </TouchableOpacity>
+        <SmallSong song={activeSong} />
+        <PlayPauseBtn size="small" />
       </View>
       <SongBar playTime={playTime} />
     </View>
@@ -69,18 +42,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     gap: 12,
-  },
-  name: {
-    fontSize: 22,
-  },
-  description: {
-    fontSize: 16,
-    color: 'grey',
-  },
-  box: {
-    width: SONG_HEIGHT / 2,
-    height: SONG_HEIGHT / 2,
-    backgroundColor: 'grey',
   },
   timer: {
     justifyContent: 'space-between',

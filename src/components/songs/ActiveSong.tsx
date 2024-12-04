@@ -1,5 +1,6 @@
 import React, {FC, memo, useEffect, useMemo, useRef, useState} from 'react';
 import BottomSheet, {BottomSheetView} from '@gorhom/bottom-sheet';
+import Animated, {FadeInDown} from 'react-native-reanimated';
 
 import {useMusicStore} from '../../store';
 import ActiveSongShort from './ActiveSongShort';
@@ -82,6 +83,7 @@ const ActiveSong: FC = () => {
   return (
     <BottomSheet
       index={-1}
+      handleIndicatorStyle={{display: 'none'}}
       snapPoints={['20%', '100%']}
       enableDynamicSizing
       enablePanDownToClose
@@ -89,15 +91,16 @@ const ActiveSong: FC = () => {
       ref={bottomSheetRef}
       onClose={closeMusic}>
       <BottomSheetView>
-        {bottomSheetInx > 1 && (
-          <ActiveSongFull
-            nextSong={nextSong}
-            prevSong={prevSong}
-            setPlayTime={setPlayTime}
-            playTime={playTime}
-          />
-        )}
-        {(bottomSheetInx === 1 || bottomSheetInx === 0) && (
+        {bottomSheetInx > 1 ? (
+          <Animated.View entering={FadeInDown}>
+            <ActiveSongFull
+              nextSong={nextSong}
+              prevSong={prevSong}
+              setPlayTime={setPlayTime}
+              playTime={playTime}
+            />
+          </Animated.View>
+        ) : (
           <ActiveSongShort playTime={playTime} />
         )}
       </BottomSheetView>
