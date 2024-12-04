@@ -15,24 +15,80 @@ import {
 } from 'react-native-reanimated';
 import {
   createStaticNavigation,
-  NavigationContainer,
   StaticParamList,
 } from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
+import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 
-import {ActiveSong} from './src';
-import {Home, Profile, SongOrder} from './src/screens';
+import {Home, MyCollection, Profile, SongOrder} from './src/screens';
+
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import AntDesign from 'react-native-vector-icons/AntDesign';
 
 configureReanimatedLogger({
   level: ReanimatedLogLevel.warn,
   strict: false,
 });
 
-const RootStack = createNativeStackNavigator({
+const TabStack = createBottomTabNavigator({
+  screenOptions: {
+    headerShown: false,
+    tabBarStyle: {
+      paddingTop: 6,
+    },
+    animation: 'shift',
+  },
   screens: {
-    Home,
+    Home: {
+      screen: Home,
+      options: {
+        tabBarIcon: ({size, focused}) => (
+          <MaterialCommunityIcons
+            name="music"
+            size={size}
+            color={focused ? '#444' : '#777'}
+          />
+        ),
+        tabBarShowLabel: false,
+      },
+    },
+    MyCollection: {
+      screen: MyCollection,
+      options: {
+        tabBarIcon: ({size, focused}) => (
+          <MaterialCommunityIcons
+            name="folder-heart-outline"
+            size={size}
+            color={focused ? '#444' : '#777'}
+          />
+        ),
+        tabBarShowLabel: false,
+      },
+    },
+    Profile: {
+      screen: Profile,
+      options: {
+        tabBarIcon: ({size, focused}) => (
+          <AntDesign
+            name="user"
+            size={size}
+            color={focused ? '#444' : '#777'}
+          />
+        ),
+        tabBarShowLabel: false,
+      },
+    },
+  },
+});
+
+const RootStack = createNativeStackNavigator({
+  screenOptions: {
+    headerShown: false,
+  },
+  initialRouteName: 'Tabs',
+  screens: {
+    Tabs: TabStack,
     SongOrder,
-    Profile,
   },
 });
 
