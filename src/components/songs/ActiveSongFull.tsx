@@ -3,7 +3,7 @@ import {useMusicStore} from '../../store';
 import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 
 import {CONTAINER_PADDING} from '../../constants';
-import Gap from '../Gap';
+import Gap from '../ui/Gap';
 import SongBar from './SongBar';
 import {ISong} from '../../types';
 import PlayPauseBtn from './PlayPauseBtn';

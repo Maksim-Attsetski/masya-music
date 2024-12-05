@@ -1,7 +1,8 @@
 import React, {FC, memo} from 'react';
 import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+
 import {useMusicStore} from '../store';
-import Layout from '../components/Layout';
+import {Layout} from '../components';
 
 const Profile: FC = () => {
   const {isPlaying, activeSong, playMusic, setIsPlaying} = useMusicStore();

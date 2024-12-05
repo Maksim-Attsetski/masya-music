@@ -5,7 +5,7 @@ import {BottomSheetMethods} from '@gorhom/bottom-sheet/lib/typescript/types';
 import {useMusicStore} from '../../store';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import {CONTAINER_PADDING} from '../../constants';
-import Gap from '../Gap';
+import Gap from '../ui/Gap';
 import SmallSong from './SmallSong';
 
 interface IMainProps {

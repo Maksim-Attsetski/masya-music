@@ -1,8 +1,9 @@
 import React, {FC, memo} from 'react';
 import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
-import {useMusicStore} from '../store';
-import Layout from '../components/Layout';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
+
+import {useMusicStore} from '../store';
+import {Layout} from '../components';
 
 const Home: FC = () => {
   const {isPlaying, activeSong, playMusic, setIsPlaying} = useMusicStore();

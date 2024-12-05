@@ -4,7 +4,7 @@ import {Dimensions, StyleSheet, Text, View} from 'react-native';
 import Animated, {useAnimatedStyle, withTiming} from 'react-native-reanimated';
 
 import {CONTAINER_PADDING} from '../../constants';
-import Gap from '../Gap';
+import Gap from '../ui/Gap';
 
 const maxWidth = Dimensions.get('screen').width;
 

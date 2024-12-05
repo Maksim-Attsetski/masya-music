@@ -1,6 +1,6 @@
 export * from './songs';
-import Gap from './Gap';
-import Layout from './Layout';
+export * from './ui';
+
 import Player from './Player';
 
-export {Player, Gap, Layout};
+export {Player};
